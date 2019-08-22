@@ -1,17 +1,17 @@
 """
 Storage utils.
 """
-from misc.storage import db
+from commo.storage import db
 
 
-def create_db(*args):
+def create_db(db, *args):
     """
     Create db tables from models
     """
     db.create_tables(args)
 
 
-def delete_db(*args):
+def delete_db(db, *args):
     """
     Drops database tables.
     """
