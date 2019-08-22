@@ -1,7 +1,6 @@
 """
 Storage utils.
 """
-from commo.storage import db
 
 
 def create_db(db, *args):
