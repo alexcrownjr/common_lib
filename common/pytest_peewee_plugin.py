@@ -92,7 +92,7 @@ def models():
         importlib.machinery.SourceFileLoader,
         importlib.machinery.SOURCE_SUFFIXES
     )
-    toolsfinder = importlib.machinery.FileFinder(__name__.split('.')[0], loader_details)
+    toolsfinder = importlib.machinery.FileFinder(os.environ["PROJECT_ROOT"], loader_details)
     specs = toolsfinder.find_spec("models")
     models_module = specs.loader.load_module()
     ret = []
