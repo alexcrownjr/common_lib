@@ -91,7 +91,7 @@ def models():
             if entity is peewee.Model:
                 continue
             if isinstance(entity, peewee.ModelBase):
-            ret.append(entity)
+                ret.append(entity)
     return ret
 
 
