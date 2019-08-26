@@ -94,6 +94,7 @@ def models():
     )
     toolsfinder = importlib.machinery.FileFinder(os.environ["PROJECT_ROOT"], loader_details)
     specs = toolsfinder.find_spec("models")
+    print(os.environ["PROJECT_ROOT"], specs, toolsfinder)
     models_module = specs.loader.load_module()
     ret = []
     for entity_name in dir(models_module):
