@@ -8,6 +8,7 @@ __versionstr__ = '.'.join(map(str, VERSION))
 
 install_requires = [
     'aiohttp',
+    'importlib',
     'peewee',
     'Marshmallow-Peewee',
     'psycopg2-binary'
@@ -45,4 +46,5 @@ setup(
     python_requires="~=3.5",
     tests_require=tests_require,
     extras_require={'develop': tests_require},
+    entry_points = {"pytest11": ["peewee_pytest = common.pytest_peewee_plugin"]},
 )
