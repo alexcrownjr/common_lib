@@ -83,6 +83,8 @@ def models():
         package_abs_path = f'{os.environ["PROJECT_ROOT"]}/{package.replace(".", "/")}'
         toolsfinder = importlib.machinery.FileFinder(package_abs_path, loader_details)
         specs = toolsfinder.find_spec("models")
+        if not specs:
+            continue
         models_module = specs.loader.load_module()
         for entity_name in dir(models_module):
             if entity_name == "BaseModel":
