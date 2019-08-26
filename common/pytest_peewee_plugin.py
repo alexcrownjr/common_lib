@@ -6,6 +6,7 @@ import importlib
 import peewee
 import psycopg2
 import pytest
+from setuptools import find_packages
 
 from .storage import database_connector_wrapper
 from .storage import utils
@@ -71,39 +72,26 @@ class DatabaseManager:
         self.connection.close()
 
 
-def pytest_load_initial_conftests(early_config, parser, args):
-    # Register the marks
-    early_config.addinivalue_line(
-        "markers",
-        "peewee_db(transaction=False): Mark the test as using "
-        "the Peewee test database.  The *transaction* argument marks will "
-        "allow you to use real transactions in the test",
-    )
-
-
-def pytest_collection_modifyitems(session, config, items):
-    def get_order_number(test):
-        marker_db = test.get_closest_marker('django_db')
-
-
 @pytest.fixture(scope='session')
 def models():
+    ret = []
     loader_details = (
         importlib.machinery.SourceFileLoader,
         importlib.machinery.SOURCE_SUFFIXES
     )
-    toolsfinder = importlib.machinery.FileFinder(os.environ["PROJECT_ROOT"], loader_details)
-    specs = toolsfinder.find_spec("models")
-    print(os.environ["PROJECT_ROOT"], specs, toolsfinder)
-    models_module = specs.loader.load_module()
-    ret = []
-    for entity_name in dir(models_module):
-        if entity_name == "BaseModel":
-            continue
-        entity = getattr(models_module, entity_name)
-        if entity is peewee.Model:
-            continue
-        if isinstance(entity, peewee.ModelBase):
+    for package in find_packages(os.environ["PROJECT_ROOT"]):
+        package_abs_path = f'{os.environ["PROJECT_ROOT"]}/{package.replace(".", "/")}'
+        toolsfinder = importlib.machinery.FileFinder(package_abs_path, loader_details)
+        specs = toolsfinder.find_spec("models")
+        print(os.environ["PROJECT_ROOT"], specs, toolsfinder)
+        models_module = specs.loader.load_module()
+        for entity_name in dir(models_module):
+            if entity_name == "BaseModel":
+                continue
+            entity = getattr(models_module, entity_name)
+            if entity is peewee.Model:
+                continue
+            if isinstance(entity, peewee.ModelBase):
             ret.append(entity)
     return ret
 
