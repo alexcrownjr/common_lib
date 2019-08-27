@@ -24,11 +24,14 @@ class ApiClient:
         self = cls(base_url, session, **session_kwargs)
         return self
 
-    async def do_api_call(self, method, url, params=None):
+    async def do_api_call(self, method, url, params=None, data=None):
         url = self._get_full_url(url)
         try:
             params = params or {}
-            async with self._session.request(method, url, raise_for_status=True, params=params) as response:
+            data = data or {}
+            async with self._session.request(
+                    method, url, raise_for_status=True, params=params, json=data
+            ) as response:
                 return await response.json()
         except (ClientResponseError, ClientConnectionError, BaseException) as ex:
             log.error("API error occurred for (%s, %s, %s): %s", method, url, params, ex)
