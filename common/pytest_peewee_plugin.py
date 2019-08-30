@@ -97,12 +97,17 @@ def models():
     return ret
 
 
+def _set_model_db(model, db):
+    model._meta.db = db
+
+
 @pytest.yield_fixture(scope='session')
 def db(models):
     database = f"{__name__.split('.')[0]}_tests"
     with DatabaseManager(database) as dbm:
         _db = database_connector_wrapper(database=dbm.database, user=dbm.user, password=dbm.password)
-        utils.create_db(_db, *models)
+        configured_models = [_set_model_db(model, _db) for model in models]
+        utils.create_db(_db, *configured_models)
         yield _db
 
 

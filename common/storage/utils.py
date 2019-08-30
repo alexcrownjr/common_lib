@@ -10,19 +10,21 @@ def get_db_from_models(models):
     raise Exception("Multiple databases are not supported!")
 
 
-def create_db(*args):
+def create_db(*args, db=None):
     """
     Create db tables from models
     """
-    db = get_db_from_models(args)
+    if not db:
+        db = get_db_from_models(args)
     db.create_tables(args)
 
 
-def delete_db(*args):
+def delete_db(*args, db=None):
     """
     Drops database tables.
     """
-    db = get_db_from_models(args)
+    if not db:
+        db = get_db_from_models(args)
     db.drop_tables(args)
 
 
