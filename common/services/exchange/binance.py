@@ -1,20 +1,6 @@
-"""
-Market exchange services.
-"""
 from binance import AsyncClient, BinanceSocketManager
 
-from common.utils import float_f
-
-
-class ExchangeServiceBase:
-    """
-    Exchange base class.
-    """
-    client = None
-
-    def __init__(self):
-        if self.client is None:
-            raise Exception("Improperly configured service client")
+from .base import ExchangeServiceBase
 
 
 class BinanceService(ExchangeServiceBase):
@@ -22,20 +8,26 @@ class BinanceService(ExchangeServiceBase):
     Binance exchange service.
     """
     socket_manager = None
+    prefix = 'binance'
 
-    def __init__(self, client, socket_manager):
+    def __init__(self, socket_manager, client=None):
         self.client = client
         self._socket_manager = socket_manager
         super(BinanceService, self).__init__()
 
     @classmethod
-    async def init(cls, loop):
+    async def init(cls, loop=None, credentials=False, **kwargs):
         """
         Initialize exchange asynchronous factory function.
         Use it to instantiate BinanceService with proper client and socket manager.
         Example:
             binance_service = await BinanceService.init(loop)
         """
-        client = await AsyncClient.create()
         socket_manager = BinanceSocketManager(cls.client, loop)
-        return cls(client, socket_manager)
+        obj = await super().init()
+        obj.socket_manager = socket_manager
+        return obj
+
+    @staticmethod
+    async def create_client(key, secret):
+        return await AsyncClient.create(key, secret)

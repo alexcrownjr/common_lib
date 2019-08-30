@@ -1,16 +1,19 @@
 from setuptools import setup, find_packages
 
 
-VERSION = (0, 2, 4)
+VERSION = (0, 2, 5)
 __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
 
 
 install_requires = [
+    'aiomisc[uvloop]',
     'aiohttp',
     'peewee',
     'Marshmallow-Peewee',
-    'psycopg2-binary'
+    'psycopg2-binary',
+    'websockets',
+    'git+https://github.com/sammchardy/python-binance.git@feature/asyncio'
 ]
 
 tests_require = [

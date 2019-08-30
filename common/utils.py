@@ -1,8 +1,12 @@
 """
 Misc utils.
 """
-import asyncio
+import datetime
 import math
+
+
+def utc_now():
+    return datetime.datetime.utcnow()
 
 
 def float_f(number, format_str="%.8f"):
@@ -22,3 +26,16 @@ def float_precision(f, n):
 def limit_step_size_floor(amount, step_qty):
     factor = float(1 / step_qty)
     return math.floor(factor * amount) / factor
+
+
+def floor_current_time(k=4):
+    now = datetime.datetime.now()
+    hours = now.hour
+    q, r = divmod(hours, k)
+    floor_hours = q * k
+
+    return str(now.replace(microsecond=0, second=0, minute=0, hour=floor_hours))
+
+
+def str_to_datetime(date_time_str):
+    return datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')
