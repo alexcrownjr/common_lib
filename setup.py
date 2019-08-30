@@ -1,10 +1,8 @@
 from setuptools import setup, find_packages
 
-
 VERSION = (0, 2, 5)
 __version__ = VERSION
 __versionstr__ = '.'.join(map(str, VERSION))
-
 
 install_requires = [
     'aiomisc[uvloop]',
@@ -13,7 +11,10 @@ install_requires = [
     'Marshmallow-Peewee',
     'psycopg2-binary',
     'websockets',
-    'binance @ git+https://github.com/sammchardy/python-binance.git@feature/asyncio'
+]
+
+dependency_links = [
+    'git+https://github.com/sammchardy/python-binance.git@feature/asyncio',
 ]
 
 tests_require = [
@@ -30,7 +31,7 @@ setup(
     author="Vladas Tamoshaitis",
     packages=find_packages(
         where='.',
-        exclude=('tests*', )
+        exclude=('tests*',)
     ),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -45,8 +46,9 @@ setup(
         "Framework :: AsyncIO"
     ],
     install_requires=install_requires,
+    dependency_links=dependency_links,
     python_requires="~=3.5",
     tests_require=tests_require,
     extras_require={'develop': tests_require},
-    entry_points = {"pytest11": ["peewee_pytest = common.pytest_peewee_plugin"]},
+    entry_points={"pytest11": ["peewee_pytest = common.pytest_peewee_plugin"]},
 )

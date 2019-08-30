@@ -107,7 +107,7 @@ def db(models):
     with DatabaseManager(database) as dbm:
         _db = database_connector_wrapper(database=dbm.database, user=dbm.user, password=dbm.password)
         configured_models = [_set_model_db(model, _db) for model in models]
-        utils.create_db(_db, *configured_models)
+        utils.create_db(*configured_models)
         yield _db
 
 
