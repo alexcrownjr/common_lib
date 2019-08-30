@@ -13,7 +13,7 @@ install_requires = [
     'Marshmallow-Peewee',
     'psycopg2-binary',
     'websockets',
-    'git+https://github.com/sammchardy/python-binance.git@feature/asyncio'
+    'binance @ git+https://github.com/sammchardy/python-binance.git@feature/asyncio'
 ]
 
 tests_require = [
