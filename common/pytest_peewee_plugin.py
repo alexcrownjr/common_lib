@@ -99,6 +99,7 @@ def models():
 
 def _set_model_db(model, db):
     model._meta.set_database(db)
+    return model
 
 
 @pytest.yield_fixture(scope='session')
