@@ -4,8 +4,7 @@ Storage utils.
 
 
 def get_db_from_models(models):
-    print(dir(models[0]._meta))
-    dbs = set([model._meta.db for model in models])
+    dbs = set([model._meta.database for model in models])
     if len(list(dbs)) == 1:
         return dbs.pop()
     raise Exception("Multiple databases are not supported!")
