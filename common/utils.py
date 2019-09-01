@@ -6,7 +6,14 @@ import math
 
 
 def utc_now():
-    return datetime.datetime.utcnow()
+    return datetime.datetime.utcnow().replace(microsecond=0)
+
+def is_crossing_actual(crossing_created):
+    time_now = utc_now()
+    crossing_created = str_to_datetime(crossing_created)
+    delta = (time_now - crossing_created)
+
+    return delta.seconds < 70
 
 
 def float_f(number, format_str="%.8f"):
