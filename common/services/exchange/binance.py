@@ -23,11 +23,11 @@ class BinanceService(ExchangeServiceBase):
         Example:
             binance_service = await BinanceService.init(loop)
         """
-        socket_manager = BinanceSocketManager(cls.client, loop)
-        obj = await super().init()
-        obj._socket_manager = socket_manager
-        return obj
+        client = await cls.create_client()
+        socket_manager = BinanceSocketManager(client, loop)
+        self = cls(socket_manager, client)
+        return self
 
     @staticmethod
-    async def create_client(key, secret):
+    async def create_client(key='', secret=''):
         return await AsyncClient.create(key, secret)
