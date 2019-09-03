@@ -11,8 +11,8 @@ class BinanceService(ExchangeServiceBase):
     prefix = 'binance'
 
     def __init__(self, socket_manager=None, client=None):
-        self.client = client
-        self._socket_manager = socket_manager
+        self.client = client or self.client
+        self._socket_manager = socket_manager or self.socket_manager
         super(BinanceService, self).__init__()
 
     @classmethod
@@ -23,10 +23,10 @@ class BinanceService(ExchangeServiceBase):
         Example:
             binance_service = await BinanceService.init(loop)
         """
-        client = await cls.create_client()
-        socket_manager = BinanceSocketManager(client, loop)
-        self = cls(socket_manager, client)
-        return self
+        obj = await super().init()
+        socket_manager = BinanceSocketManager(cls.client, loop)
+        obj.socket_manager = socket_manager
+        return obj
 
     @staticmethod
     async def create_client(key='', secret=''):
