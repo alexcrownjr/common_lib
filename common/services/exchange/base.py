@@ -26,10 +26,14 @@ class ExchangeServiceBase:
             raise Exception("Improperly configured service client")
 
     @classmethod
-    async def _init(cls, credentials=False):
+    async def _init(cls, no_auth=True, credentials=False):
         """
         By default exchange credentials are taken from env variables.
         """
+        if no_auth:
+            cls.client = await cls.create_client()
+            return
+
         if credentials:
             cls.client = await cls.create_client_from_credentials()
         else:
