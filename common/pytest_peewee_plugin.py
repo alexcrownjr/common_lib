@@ -105,6 +105,7 @@ def _set_model_db(model, db):
 @pytest.yield_fixture(scope='session')
 def db(models):
     database = f"{__name__.split('.')[0]}_tests"
+    print(f"DATABASE NAME IS {database}")
     with DatabaseManager(database) as dbm:
         _db = database_connector_wrapper(database=dbm.database, user=dbm.user, password=dbm.password)
         configured_models = [_set_model_db(model, _db) for model in models]
