@@ -38,6 +38,7 @@ class DatabaseManager:
         self.connection = conn
 
     def create(self):
+        print(f"CREATE DATABASE {self.database}")
         try:
             self.cursor.execute(f'DROP DATABASE {self.database};')
         except Exception:
