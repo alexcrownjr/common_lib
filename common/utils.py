@@ -5,6 +5,9 @@ import datetime
 import math
 
 
+def raise_KeyError(msg=''): raise KeyError(msg)
+
+
 def float_to_str(f):
     float_string = repr(f)
     if 'e' in float_string:  # detect scientific notation
