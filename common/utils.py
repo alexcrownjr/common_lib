@@ -1,12 +1,34 @@
 """
 Misc utils.
 """
+import asyncio
 import datetime
 import math
+import time
 
 
 def raise_KeyError(msg=''): raise KeyError(msg)
 
+
+def time_spent(logger):
+    """
+    Measure time spent on `func` coroutine execution.
+    """
+    def decorator_wrapper(func):
+        async def process(func, *args, **kwargs):
+            if asyncio.iscoroutinefunction(func):
+                return await func(*args, **kwargs)
+            return func(*args, **kwargs)
+
+        async def wrapper(*args, **kwargs):
+            s = time.perf_counter()
+            result = await process(func, *args, **kwargs)
+            elapsed = time.perf_counter() - s
+            logger.info(f"{func.__name__} time = {elapsed}")
+            return result
+        return wrapper
+
+    return decorator_wrapper    
 
 def float_to_str(f):
     float_string = repr(f)
