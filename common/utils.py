@@ -70,6 +70,10 @@ def float_precision(f, n):
     f = "{:0.0{}f}".format(float(f), n)
     return float(str(int(f)) if int(n) == 0 else f)
 
+def qty_precision(quantity, stepSize):
+    precision = int(round(-math.log(stepSize, 10), 0))
+    return round(quantity, precision)
+
 
 def limit_step_size_floor(amount, step_qty):
     factor = float(1 / step_qty)
